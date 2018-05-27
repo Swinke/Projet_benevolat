@@ -15,15 +15,17 @@
 </head>
 <body>
     <form class ='container-fuild'>
-        <div class='form-group' id="benevole">
+        
             <div id='erreur'></div>
             <button type="button" id="submit" class="btn btn-default">Envoyer</button>
             
+        <div class='form-group' id="benevole">
             <div class="row">
                 <div class='col-md-2'>
                     <label for='date_ins'>date inscription</label>
                     <input class="form-control" name="date_ins" id="date_ins" value="année/mois/jour"/>
                 </div>
+
                 <div class='radio-inline'>
                     <input type='radio' id='membre' name = 'type_contrat' value='membre'/>
                     <label for='membre'>membre</label>
@@ -35,7 +37,7 @@
                     <label for='type_autre'>autre</label>
                 </div>
             </div>
-                       
+            
             <h3>Section 1: Information personnel </h3>
 
             <label class='radio-inline'>
@@ -98,60 +100,61 @@
                     <input class='form-control' name='revenu'/>
                 </div>
             </div>
-
-            <fieldset id="dossier_revenu">
-                <h4>Preuve revenu</h4>
-                <div class = "radio-inline">
-                    <input type='checkbox' id='preuve_revenu' name = 'preuve_revenu' value ='true'/>
-                    <label for='preuve_revenu'>preuve de revenu</label>
-                    <input type='checkbox' id='preuve_adresse' name = 'preuve_adresse' value ='true'/>
-                    <label for='preuve_adresse'>preuve d'adresse</label>
-                    <input type='checkbox' id='carte_id' name = 'carte_id' value ='true'/>
-                    <label for='carte_id'>carte identité</label>
-                </div>
-                <div class = "radio-inline">
-                    <input type='checkbox' id='cotisation' name = 'cotisation' value ='true'/>
-                    <label for='cotisation'>cotisation payé</label>
-                    <label for='montant'>montant :</label>
-                    <input name = "montant" id ="montant"/>
-                </div>
-            </fieldset>
-
-            <fieldset id='contact_urg'>
-                <h4>Contact en cas d'urgence</h4>
-                <div class="row">
-                    <div class='col-md-2'>
-                        <label for='nom_urg'>Nom</label>
-                        <input class="form-control" name='nom_urg' id='nom_urg'/>
-                    </div>
-                    <div class='col-md-2'>
-                            <label for='prenom_urg'>Prenom</label>
-                            <input class="form-control" name='prenom_urg' id='prenom_urg'/>
-                    </div>
-                    <div class='col-md-2'>
-                        <label for='tel_urg'>telephone</label>
-                        <input class='form-control' name='tel_urg' id='tel_urg'/>
-                    </div>
-    
-                </div>
-            </fieldset>
-
-            <fieldset id='premier_rdv'>
-                <h4>Premier rendez vous</h4>
-                <div class="row">
-                    <div class='col-md-2'>
-                        <label for='date_rdv'>date</label>
-                        <input class="form-control" name='date_rdv' id='date_rdv'/>
-                    </div>
-                    <div class='col-md-2'>
-                        <label for='poste'>poste</label>
-                        <input class="form-control" name='poste' id='poste'/>
-                    </div>
-    
-                </div>
-            </fieldset>
-
         </div>
+
+        
+        <fieldset id="dossier_revenu">
+            <h4>Preuve revenu</h4>
+            <div class = "radio-inline">
+                <input type='checkbox' id='preuve_revenu' name = 'preuve_revenu' value ='true'/>
+                <label for='preuve_revenu'>preuve de revenu</label>
+                <input type='checkbox' id='preuve_adresse' name = 'preuve_adresse' value ='true'/>
+                <label for='preuve_adresse'>preuve d'adresse</label>
+                <input type='checkbox' id='carte_id' name = 'carte_id' value ='true'/>
+                <label for='carte_id'>carte identité</label>
+            </div>
+            <div class = "radio-inline">
+                <input type='checkbox' id='cotisation' name = 'cotisation' value ='true'/>
+                <label for='cotisation'>cotisation payé</label>
+                <label for='montant'>montant :</label>
+                <input name = "montant" id ="montant"/>
+            </div>
+        </fieldset>
+
+        <fieldset id='contact_urg'>
+            <h4>Contact en cas d'urgence</h4>
+            <div class="row">
+                <div class='col-md-2'>
+                    <label for='nom_urg'>Nom</label>
+                    <input class="form-control" name='nom_urg' id='nom_urg'/>
+                </div>
+                <div class='col-md-2'>
+                        <label for='prenom_urg'>Prenom</label>
+                        <input class="form-control" name='prenom_urg' id='prenom_urg'/>
+                </div>
+                <div class='col-md-2'>
+                    <label for='tel_urg'>telephone</label>
+                    <input class='form-control' name='tel_urg' id='tel_urg'/>
+                </div>
+    
+            </div>
+        </fieldset>
+
+        <fieldset id='premier_rdv'>
+            <h4>Premier rendez vous</h4>
+            <div class="row">
+                <div class='col-md-2'>
+                    <label for='date_rdv'>date</label>
+                    <input class="form-control" name='date_rdv' id='date_rdv'/>
+                </div>
+                <div class='col-md-2'>
+                    <label for='poste'>poste</label>
+                    <input class="form-control" name='poste' id='poste'/>
+                </div>
+            </div>
+        </fieldset>
+
+        
 
         <fieldset id='socio'>
             <h3>Section 2: Informations socio démographiques</h3>

@@ -112,25 +112,46 @@ $(document).ready(function() {
         $('#erreur').attr("class","")
         $('#erreur').html("");
         $("#benevole input[name != date_ins][name != montant]").each(function() {
-            if(!$('#type_autre').is(':checked')) {
+            if($(this).val() == "") {
+                $(this).css("border-color","red");
+                erreur = true;
+            }
+            else
+                $(this).css("border-color","grey");
+        });
+        
+
+        if(!$('#type_autre').is(':checked')) {
+
+            // Verification input contact d'urgence
+            $("#contact_urg input").each(function() {
                 if($(this).val() == "") {
                     $(this).css("border-color","red");
                     erreur = true;
                 }
                 else
                     $(this).css("border-color","grey");
+            });
+
+            if($('#type_benevole').is(':checked')) {
+                // Verification input premier rendez vous
+                $("#premier_rdv input").each(function() {
+                    if($(this).val() == "") {
+                        $(this).css("border-color","red");
+                        erreur = true;
+                    }
+                    else
+                        $(this).css("border-color","grey");
+                });
             }
-        });
-        
-        if(!$('#type_autre').is(':checked')) {
+
+
             // verification statut coché
             compt = 0;
             $("input[name=statut]").each(function() {
                 if($(this).is(':checked')) {
                     compt++;
-                    console.log($(this) + "is check")
                 }
-                console.log($(this));
             });
             if($("input[name=statut][type=text]").val() != "")
                 compt++;
@@ -268,9 +289,13 @@ $(document).ready(function() {
         if(!erreur) {
 
             if($('#type_autre').is(':checked')) 
-                dataform = $('#benevole input').serialize();
+                dataform = $('#benevole input').serialize()+"&"+$('#dossier_revenu').serialize();
+            else if($('#type_benevole').is(':checked'))
+                dataform = $('#benevole input').serialize()+ "&"+ $('#socio input').not($('#socio input[id *= autre]')).serialize()
+                            +"&"+$('#type_benevole').serialize()+"&"+$('#contact_urg').serialize()+"&"+$('#premier_rdv').serialize();
             else
-                dataform = $('#benevole input').serialize()+ "&"+ $('#socio input').not($('#socio input[id *= autre]')).serialize();
+                dataform = $('#benevole input').serialize()+ "&"+ $('#socio input').not($('#socio input[id *= autre]')).serialize()
+                +"&"+$('#type_benevole').serialize()+"&"+$('#contact_urg').serialize();
             console.log(dataform);
             $('#erreur').html("");
             $('#erreur').attr("class","");
@@ -292,38 +317,41 @@ $(document).ready(function() {
                     $('#erreur').html("benevole enregistrer !");
                     
                     if(!$('#type_autre').is(':checked')) {
-                        //enregistrement compétence
-                        $.ajax({
-                            url: './php/ajoutBComp.php',
-                            type: 'post',
-                            dataType: 'json',
-                            data: $('#comp input').serialize()+"&nom="+$('input[name=nom]').val()+"&prenom="+$('input[name=prenom]').val() //+ "&"+ $('#socio').serialize()
-                        })
-                        .done(function(data) {
-                            console.log("ajout compétence: " +data);
-                        })
 
-                        //enregistrement charges
-                        $.ajax({
-                            url: './php/ajoutBCharge.php',
-                            type: 'post',
-                            dataType: 'json',
-                            data: $('#charge input').serialize()+"&nom="+$('input[name=nom]').val()+"&prenom="+$('input[name=prenom]').val() //+ "&"+ $('#socio').serialize()
-                        })
-                        .done(function(data) {
-                            console.log("ajout charge: "+ data);
-                        })
-                
-                        //enregistrement dispo
-                        $.ajax({
-                            url: './php/ajoutBDispo.php',
-                            type: 'post',
-                            dataType: 'json',
-                            data: $('#am input').serialize()+"&nom="+$('input[name=nom]').val()+"&prenom="+$('input[name=prenom]').val()+"&dispo=am" //+ "&"+ $('#socio').serialize()
-                        })
-                        .done(function(data) {
-                            console.log("ajout dispo " + data);
-                        })
+                        if($('#type_benevole').is(':checked')) {
+                            //enregistrement compétence
+                            $.ajax({
+                                url: './php/ajoutBComp.php',
+                                type: 'post',
+                                dataType: 'json',
+                                data: $('#comp input').serialize()+"&nom="+$('input[name=nom]').val()+"&prenom="+$('input[name=prenom]').val() //+ "&"+ $('#socio').serialize()
+                            })
+                            .done(function(data) {
+                                console.log("ajout compétence: " +data);
+                            })
+
+                            //enregistrement charges
+                            $.ajax({
+                                url: './php/ajoutBCharge.php',
+                                type: 'post',
+                                dataType: 'json',
+                                data: $('#charge input').serialize()+"&nom="+$('input[name=nom]').val()+"&prenom="+$('input[name=prenom]').val() //+ "&"+ $('#socio').serialize()
+                            })
+                            .done(function(data) {
+                                console.log("ajout charge: "+ data);
+                            })
+                    
+                            //enregistrement dispo
+                            $.ajax({
+                                url: './php/ajoutBDispo.php',
+                                type: 'post',
+                                dataType: 'json',
+                                data: $('#am input').serialize()+"&nom="+$('input[name=nom]').val()+"&prenom="+$('input[name=prenom]').val()+"&dispo=am" //+ "&"+ $('#socio').serialize()
+                            })
+                            .done(function(data) {
+                                console.log("ajout dispo " + data);
+                            })
+                        }
 
                         //enregistrement commentaire
                         //console.log($('#ob_comp').serialize()+$('#ob_charge').serialize()+"&"+$('#ob_dispo').serialize()+"&"+$('#ob').serialize());
