@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <meta charset='utf-8' />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="../bootstrap/js/bootstrap.min.js"></script>
+</head>
+<script>
+    $(document).ready(function() {
+        $("#rechercher").click(function(event) {
+            event.preventDefault();
+            $.ajax({
+                    url: 'rechercherB.php',
+                    type: 'post',
+                    dataType: 'json',
+                    data: "nom="+$('#nom').val() +"&prenom="+$('#prenom').val()
+                })
+                .done(function(data) {
+                    console.log(data);
+                    if(!data['erreur']) {
+                        $('#benevole input').each(function(){
+                            $(this).val(data[$(this).attr('name')]);
+                        })
+                        $('#'+data['sexe']).prop("checked",true);
+                        $('#'+data['langue']).prop("checked",true);
+                        $('#'+data['logement']).prop("checked",true);
+                        $('#'+data['menage']).prop("checked",true);
+                        $('#'+data['occupation']).prop("checked",true);
+                        $('#'+data['statut']).prop("checked",true);
+                        if(data['permis'])
+                            $('#permis').prop("checked",true);
+                        if(data['vehicule'])
+                            $('#vehicule').prop("checked",true);
+
+                        $.ajax ({
+                            url: 'chercherBC.php',
+                            type: 'post',
+                            dataType: 'json',
+                            data: "id="+data['idBenevole']
+                        })
+                        .done(function(data) {
+                            console.log(data);
+                            $.each(data, function (i, val) {
+                                $('#'+val).prop("checked",true);
+                            })
+                        })
+
+                        $.ajax ({
+                            url: 'chercherBCharge.php',
+                            type: 'post',
+                            dataType: 'json',
+                            data: "id="+data['idBenevole']
+                        })
+                        .done(function(data) {
+                            console.log(data);
+                            $.each(data, function (i, val) {
+                                $('#'+val).prop("checked",true);
+                            })
+                        })
+
+                        $.ajax ({
+                            url: 'chercherBDispo.php',
+                            type: 'post',
+                            dataType: 'json',
+                            data: "id="+data['idBenevole']+"&dispo=am"
+                        })
+                        .done(function(data) {
+                            console.log(data);
+                            $.each(data, function (i, val) {
+                                $('#'+val+"_am").prop("checked",true);
+                            })
+                        })
+
+                        $.ajax ({
+                            url: 'chercherBDispo.php',
+                            type: 'post',
+                            dataType: 'json',
+                            data: "id="+data['idBenevole']+"&dispo=pm"
+                        })
+                        .done(function(data) {
+                            console.log(data);
+                            $.each(data, function (i, val) {
+                                $('#'+val+"_pm").prop("checked",true);
+                            })
+                        })
+                    }
+                })
+        });
+
+        $("#modifier").click(function(event) {
+            event.preventDefault();
+            $.ajax({
+                    url: 'modifB.php',
+                    type: 'post',
+                    dataType: 'json',
+                    data: $('#benevole input').serialize()+ "&"+ $('#socio').serialize()+"&nom="+$("input[name=nom]").val()+"&prenom="+$("input[name=prenom]").val()
+            })
+            .done(function(data) {
+                console.log(data);
+                if(data['correct']) {
+                    //enregistrement compétence
+                    $.ajax({
+                            url: 'ajoutBComp.php',
+                            type: 'post',
+                            dataType: 'json',
+                            data: $('#comp input').serialize()+"&nom="+$('input[name=nom]').val()+"&prenom="+$('input[name=prenom]').val() //+ "&"+ $('#socio').serialize()
+                        })
+                        .done(function(data) {
+                            console.log(data);
+                        })
+
+                        //enregistrement charges
+                        $.ajax({
+                            url: 'ajoutBCharge.php',
+                            type: 'post',
+                            dataType: 'json',
+                            data: $('#charge input').serialize()+"&nom="+$('input[name=nom]').val()+"&prenom="+$('input[name=prenom]').val() //+ "&"+ $('#socio').serialize()
+                        })
+                        .done(function(data) {
+                            console.log(data);
+                        })
+                
+                        //enregistrement dispo
+                        $.ajax({
+                            url: 'ajoutBDispo.php',
+                            type: 'post',
+                            dataType: 'json',
+                            data: $('#am input').serialize()+"&nom="+$('input[name=nom]').val()+"&prenom="+$('input[name=prenom]').val()+"&dispo=am" //+ "&"+ $('#socio').serialize()
+                        })
+                        .done(function(data) {
+                            console.log(data);
+                        })
+                        $.ajax({
+                            url: 'ajoutBDispo.php',
+                            type: 'post',
+                            dataType: 'json',
+                            data: $('#pm input').serialize()+"&nom="+$('input[name=nom]').val()+"&prenom="+$('input[name=prenom]').val()+"&dispo=pm" //+ "&"+ $('#socio').serialize()
+                        })
+                        .done(function(data) {
+                            console.log(data);
+                        })
+                }
+            });
+        });
+
+    });
+</script>
+<body>
+    <form class ='container-fuild'>
+        <div class='form-group' id="benevole">
+            <div id='erreur'></div>
+
+            <div class="row">
+                <div class='col-lg-2'>
+                    <label for='nom'>Nom</label>
+                    <input class="form-control" name='nom' id='nom'/>
+                </div>
+                <div class='col-lg-2'>
+                        <label for='prenom'>Prenom</label>
+                        <input class="form-control" name='prenom' id='prenom'/>
+                </div>
+                <button type="button" id="rechercher" class="btn btn-default">Rechercher</button>
+                <button type="button" id="modifier" class="btn btn-default">modifier</button>
+            </div>
+
+            <h2>Section 1: Information personnel </h2>
+
+            <label class='radio-inline'>
+                    <input type='radio' id='mme' name = 'sexe' value='mme'>Mme
+                    <input type='radio' id='m' name = 'sexe' value='m'/>M
+                </label>
+
+            <div class="row">
+                    <div class='col-lg-2'>
+                            <label for='civique'>N° Civique</label>
+                            <input class="form-control" name='civique' id='civique'/>
+                    </div>
+                    <div class='col-lg-2'>
+                        <label for='app'>app</label>
+                        <input class="form-control" name='app' id='app'/>
+                    </div>
+                    <div class='col-lg-3'>
+                            <label for='cp'>code postal</label>
+                            <input class='form-control' name='cp' id='cp'/>
+                    </div>
+                    <div class='col-lg-1'>
+                            <label for='rue'>rue</label>
+                            <input class="form-control" name='rue' id='rue'/>
+                    </div>
+            </div>
+            <div class="row">
+                <div class='col-lg-2'>
+                    <label for='tel'>telephone</label>
+                    <input class='form-control' name='tel' id='tel'/>
+                </div>
+                <div class='col-lg-2'>
+                    <label for='date'>date de naissance</label>
+                    <input class='form-control' name='date' id='date' value='année/mois/jour'/>
+                </div>
+                <div class='col-lg-2'>
+                        <label for='courriel'>courriel</label>
+                        <input class='form-control' name='courriel' id='courriel'/>
+                </div>
+            </div>
+        </div>
+
+        <fieldset id='socio'>
+            <h2>Section 2: Informations socio démographiques</h2>
+            <h3>Statut</h3>
+            <div id="statut"></div>
+            <div class='radio-inline'>
+                <input type='radio' id='citoyen' name = 'statut' value='citoyen'/>citoyen-ne
+                <input type='radio' id='resident' name = 'statut' value = 'resident'/>resident-e permanent-e
+                <input type='radio' id='refugie' name = 'statut' value = 'refugie'/>refugié-e
+                <input type='radio' id='attente' name = 'statut' value = 'attente'/>en attente de statut
+                <input type='radio' id='moinsdeux' name = 'statut' value = 'moinsdeux'/>Moins de deux mois
+            </div>
+            
+            <h3>Langue de communication</h3>
+            <div id='langue'></div>
+            <div class='radio-inline'>
+                <input type='radio' id='francais' name = 'langue' value='francais'/>français
+                <input type='radio' id='anglais' name = 'langue' value='anglais'/>anglais
+            </div>
+
+            <h3>Type de logement</h3>
+            <div id='logement'></div>
+            <div class='form-group radio'>
+                <input type='radio' id='hlm' name = 'logement' value='hlm'/>hlm
+                <input type='radio' id='coop' name = 'logement' value='coop'/>cooperative
+                <input type='radio' id='supervise' name = 'logement' value='supervise'/>supervisé
+                <input type='radio' id='chambre' name = 'logement' value='chambre'/>chambre
+                <input type='radio' id='sansdomicile' name = 'logement' value='sansdomicile'/>sans domicile
+                <input type='radio' id='apprive' name = 'logement' value='apprive'/>appartement privé
+            </div>
+
+            <h3>Type de ménage</h3>
+            <div id='menage'></div>
+            <div class='form-group radio'>
+                <input type='radio' id='seul' name = 'menage' value='seul'/>personne
+                <input type='radio' id='couplesans' name = 'menage' value='couplesans'/>couple sans enfant
+                <input type='radio' id='couple' name = 'menage' value='couple'/>couple
+                <input type='radio' id='coloc' name = 'menage' value='coloc'/>colocataire
+                <input type='radio' id='mono' name = 'menage' value='mono'/>monoparentale
+            </div>
+
+            <h3>Occupation</h3>
+            <div id='occupation'></div>
+            <div class='form-group radio'>
+                <input type='radio' id='emploi' name = 'occupation' value='emploi'/>emploi
+                <input type='radio' id='etudiant' name = 'occupation' value='etudiant'/>etudiant
+                <input type='radio' id='recherche' name = 'occupation' value='recherche'/>en recherche d'emploi
+                <input type='radio' id='hors' name = 'occupation' value='hors'/>hors du marché du travail
+
+            <h3>Source principale de revenu</h3>
+            <div id='source_revenu'></div>
+            <div class='form-group radio'>
+                <input type='radio' id='salaire' name = 'source_revenu' value='salaire'/>salaire
+                <input type='radio' id='revenu' name = 'source_revenu' value='revenu'/>revenu
+                <input type='radio' id='viellesse' name = 'source_revenu' value='viellesse'/>sécurité de la viellesse
+                <input type='radio' id='bourse' name = 'source_revenu' value='bourse'/>bourse
+                <input type='radio' id='srevenu' name = 'source_revenu' value='srevenu'/>sans revenu
+                <input type='radio' id='autonome' name = 'source_revenu' value='autonome'/>autonome
+            </div>
+        </div>
+
+        <fieldset id='implication'>
+            <h2>Section 4: implication</h2>
+
+            <h3>Compétence</h3>
+            <div id='competence'></div>
+            <div id='comp'>
+                <div id='comp_err'></div>
+                <input type='checkbox' id='administration' name = 'administration' value = 'administration'/>
+                <label for='administration'>administration</label>
+                <input type='checkbox' id='serviceclientele' name = 'serviceclientele' value = 'serviceclientele'/>
+                <label for='service clientele'>service à la clientele</label>
+                <input type='checkbox' id='alimentation' name = 'alimentation' value = 'alimentation'/>
+                <label for='alimentation'>alimentation</label>
+                <input type='checkbox' id='manutention' name = 'manutention' value = 'manutention'/>
+                <label for='manutention'>manutention</label>
+            </div>
+            
+            <h3>Permis et voiture</h3>
+            <input type='checkbox' id='permis' name = 'permis'/>
+            <label for='permis'>Possesion permis de conduire</label>
+            <input type='checkbox' id='vehicule' name = 'vehicule'/>
+            <label for='vehicule'>Possession vehicule</label>
+
+            <h3>Condition physique</h3>
+            <p>Charge :</p>
+            <div id='charge'>
+                <div id='charge_err'></div>
+                <input type='checkbox' id='leger' name = 'leger' value ='leger'/>
+                <label for='leger'>Legère (moins 22lb)</label>
+                <input type='checkbox' id='moyen' name = 'moyen' value ='moyen'/>
+                <label for='moyen'>Moyennes</label>
+                <input type='checkbox' id='lourd' name = 'lourd' value='lourd'/>
+                <label for='lourd'>Lourdes (sup 50 lb)</label>
+                <input type='checkbox' id='debout' name = 'debout' value='true'/>
+                <label for='debout'>Peux rester debout plus de trois heure</label>
+            </div>
+        </fieldset>
+
+        <fieldset id='dispo'>
+            <div id='dispo_err'></div>
+            <h3>Vos disponibilité</h3>
+            <table class ="table">
+                <tr>
+                    <th></th>
+                    <th>Lundi</th>
+                    <th>Mardi</th>
+                    <th>Mercedi</th>
+                    <th>Jeudi</th>
+                    <th>Vendredi</th>
+                </tr>
+                <tr id='am'>
+                    <td>AM</td>
+                    <td>
+                        <input type='checkbox' id='mon_am' name = 'mon' value = 'mon'/>   
+                    </td>
+                    <td>
+                        <input type='checkbox' id='tue_am' name = 'tue' value = 'tue'/>   
+                    </td>
+                    <td>
+                        <input type='checkbox' id='wed_am' name = 'wed' value = 'wed'/>   
+                    </td>
+                    <td>
+                        <input type='checkbox' id='thu_am' name = 'thu' value = 'thu'/>   
+                    </td>
+                    <td>
+                        <input type='checkbox' id='fri_am' name = 'fri' value = 'fri'/>   
+                    </td>
+                </tr>
+                <tr id='pm'>
+                    <td>PM</td>
+                    <td>
+                        <input type='checkbox' id='mon_pm' name = 'mon' value = 'mon'/>   
+                    </td>
+                    <td>
+                        <input type='checkbox' id='tue_pm' name = 'tue' value = 'tue'/>   
+                    </td>
+                    <td>
+                        <input type='checkbox' id='wed_pm' name = 'wed' value = 'wed'/>   
+                    </td>
+                    <td>
+                        <input type='checkbox' id='thu_pm' name = 'thu' value = 'thu'/>   
+                    </td>
+                    <td>
+                        <input type='checkbox' id='fri_pm' name = 'fri' value = 'fri'/>   
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+
+    </form>
+</body>

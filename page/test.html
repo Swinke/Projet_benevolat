@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8' />
+<!-- fentre modal -->
+<link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/start/jquery-ui.min.css" rel="stylesheet">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+<!-- FullCalendar -->
+<link href='../fullcalendar.min.css' rel='stylesheet' />
+<link href='../fullcalendar.print.min.css' rel='stylesheet' media='print' />
+<script src='../lib/moment.min.js'></script>
+<!--<script src='../lib/jquery.min.js'></script>
+<script src='../lib/jquery-ui.js'></script>-->
+<script src='../fullcalendar.min.js'></script>
+
+<script>
+  var dialog;
+  var jour = false;
+  var date = "";
+
+
+  function affPers (path) {
+    $('#date').html("");
+    $.getJSON(path, function(data) {
+      $.each(data, function (jour, pers) {
+        $('#date').append("<div><h2>"+jour+"</h2><ul>")
+        $.each(pers, function (nom, nbr) {
+            $('#date').append("<li>"+nom+" : "+nbr+"</li>")
+        });
+        $('#date').append("</ul></div>");
+      });
+      
+    });
+  }
+
+  function affdialog(event,element) {
+    $("#bene").html("");
+    $.getJSON("loadbene.php?date="+$.fullCalendar.formatDate(event.start, "Y-MM-D HH:mm:ss")+"&heure=0&act="+event.title, function(data) {
+      if(data.length != 0) {
+        $("#bene").append("<option disabled>Zero heure</option>");
+        $.each(data, function (i,benevole) {
+          $("#bene").append("<option value = '"+benevole.id+"'>"+benevole.nom+" "+benevole.prenom+"</option>");
+        });
+      }
+    });
+
+    $.getJSON("loadbene.php?date="+$.fullCalendar.formatDate(event.start, "Y-MM-D HH:mm:ss")+"&heure=3&act="+event.title, function(data) {
+      if(data.length != 0) {
+        $("#bene").append("<option disabled>Moins 3h</option>");
+        $.each(data, function (i,benevole) {
+          $("#bene").append("<option value = '"+benevole.id+"'>"+benevole.nom+" "+benevole.prenom+"</option>");
+        });
+      }
+    });
+
+    $.getJSON("loadbene.php?date="+$.fullCalendar.formatDate(event.start, "Y-MM-D HH:mm:ss")+"&heure=6&act="+event.title, function(data) {
+      if(data.length != 0) {
+        $("#bene").append("<option disabled>Moins 6h</option>");
+        $.each(data, function (i,benevole) {
+          $("#bene").append("<option value = '"+benevole.id+"'>"+benevole.nom+" "+benevole.prenom+"</option>");
+        });
+      }
+    });
+
+    $.getJSON("loadbene.php?date="+$.fullCalendar.formatDate(event.start, "Y-MM-D HH:mm:ss")+"&heure=12", function(data) {
+      if(data.length != 0) {
+        $("#bene").append("<option disabled>Moins 12h</option>");
+        $.each(data, function (i,benevole) {
+          $("#bene").append("<option value = '"+benevole.id+"'>"+benevole.nom+" "+benevole.prenom+"</option>");
+        });
+      }
+    });
+
+    $.getJSON("loadbene.php?date="+$.fullCalendar.formatDate(event.start, "Y-MM-D HH:mm:ss")+"&heure=13", function(data) {
+      if(data.length != 0) {
+        $("#bene").append("<option disabled>Ohters</option>");
+        $.each(data, function (i,benevole) {
+          $("#bene").append("<option value = '"+benevole.id+"'>"+benevole.nom+" "+benevole.prenom+"</option>");
+        });
+      }
+    });
+
+    $("#dialog-form").dialog({modal: true, 
+      width:350,
+      buttons:{
+        "Submit": function () {
+          var formData = {
+            'title':event.title,
+            'idBene':$('#bene').val(),
+            'start': $.fullCalendar.formatDate(event.start, "Y-MM-D HH:mm:ss"),
+            'end': $.fullCalendar.formatDate(event.end, "Y-MM-D HH:mm:ss"),
+            'id': event.id
+          }
+          console.log(formData);
+          $.ajax({
+            type: 'POST',
+            url: 'ajoutBA.php',
+            data: formData,
+            dataType: 'json',
+            encode: true
+          })
+          .done(function(data) {
+            console.log(data);
+            event.id = data['id'];
+            event.nom = data['nom'];
+            event.prenom = data['prenom'];
+            $('#calendar').fullCalendar('updateEvent',event);
+            if(date) 
+              affPers("loaddate.php?date="+date+'&jour='+jour);
+            else
+              affPers("loaddate.php");
+            $("#dialog-form").dialog("close");
+          })
+         },
+        Cancel: function() {
+          $("#dialog-form").dialog("close");
+        }
+      }
+    })
+  }
+
+  $(document).ready(function() {
+
+    affPers("loaddate.php");
+    $.getJSON("loadactivite.php", function(data) {
+      temp = $('#external-events').html();
+      formevent = $('#ask-event').html();
+      $.each(data, function(index,element) {
+        temp += "<div class='fc-event'>"+element.title+"</div>";
+        formevent += "<input type='checkbox' id='"+element.title+"' name ='"+element.title+"' />";
+        formevent += "<label for='"+element.title+"'>"+element.title+"</label>";
+      })
+      $('#external-events').html(temp);
+      $('#ask-event').html(formevent);
+
+      $('#ask-event input').change(function() {
+          var id_events;
+          var path = 'load.php?date='+date+'&jour='+jour;
+          $('#ask-event input').each(function () {
+            path += '&'+$(this).attr("name")+"="+$(this).is(":checked");
+          })
+          $('#calendar').fullCalendar('removeEventSources');
+          $('#calendar').fullCalendar('addEventSource',path);
+      })
+      
+      /* initialize the external events
+      -----------------------------------------------------------------*/
+      $('#external-events .fc-event').each(function() {
+        // store data so the calendar knows to render an event upon drop
+        $(this).data('event', {
+          title: $.trim($(this).text()), // use the element's text as the event title
+          nom: "",
+          prenom: "",
+          stick: true, // maintain when user navigates (see docs on the renderEvent method)
+          id: 0
+        });
+
+        // make the event draggable using jQuery UI
+        $(this).draggable({
+          zIndex: 999,
+          revert: true,      // will cause the event to go back to its
+          revertDuration: 0  //  original position after the drag
+        });
+      });
+    });
+
+    $('#calendar').fullCalendar({
+      header: {
+				left: 'prev,next today',
+				center: 'title',
+				right: 'agendaWeek,agendaDay'
+			},
+      defaultView:'agendaWeek',
+      weekends: false,
+      editable: true,
+      droppable: true,
+      minTime: "07:00:00",
+      maxTime: "18:00:00",
+      slotDuration: "00:15:00",
+      allDaySlot: false,
+      //drop: function(event,element) {},
+      eventLimit: true, // allow "more" link when too many events
+      events: {
+        url: 'load.php'
+      },
+      eventDrop:function(event,element){
+        var formData = {
+          'nom': event.nom,
+          'prenom': event.prenom,
+          'start': $.fullCalendar.formatDate(event.start, "Y-MM-D HH:mm:ss"),
+          'end': $.fullCalendar.formatDate(event.end, "Y-MM-D HH:mm:ss"),
+          'id': event.id
+        }
+        $.ajax({
+          type: 'POST',
+          url: 'modifBA.php',
+          data: formData,
+          dataType: 'json',
+          encode: true
+        })
+        .done(function(data) {
+          console.log(data);
+        })
+      },
+      eventRender: function(event, element) {
+        element.click(function() {
+          affdialog(event,element);
+        });
+        element.find('.fc-title')
+        .append('<div class="hr-line-solid-no-margin"></div><span style="font-size: 10px">'
+        +event.nom+'</span></div>');
+      },
+      viewRender: function(view, element) {
+        $('#calendar').fullCalendar('removeEventSources');
+        date = $.fullCalendar.formatDate(view.intervalStart, "Y-MM-D HH:mm:ss");
+        if(view.name == 'agendaDay') {
+          jour = true;
+          affPers("loaddate.php?date="+date+'&jour=true');
+          var path = 'load.php?date='+date+'&jour='+jour;
+          $('#ask-event input').each(function () {
+            path += '&'+$(this).attr("name")+"="+$(this).is(":checked");
+          })
+          $('#calendar').fullCalendar('addEventSource',path);
+        }
+        else {
+          jour = false;
+          affPers("loaddate.php?date="+date+'&jour=false');
+          var path = 'load.php?date='+date+'&jour='+jour;
+          $('#ask-event input').each(function () {
+            path += '&'+$(this).attr("name")+"="+$(this).is(":checked");
+          })
+          $('#calendar').fullCalendar('addEventSource',path);
+        }
+      }
+    });
+  });
+
+</script>
+<style>
+
+  body {
+    margin-top: 40px;
+    font-size: 14px;
+    font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+  }
+
+  #wrap {
+    width: 1500px;
+    margin: 0 auto;
+  }
+
+  #external-events {
+    float: left;
+    width: 150px;
+    padding: 0 10px;
+    border: 1px solid #ccc;
+    background: #fff;
+    text-align: left;
+  }
+
+  #external-events h4 {
+    font-size: 16px;
+    margin-top: 0;
+    padding-top: 1em;
+  }
+
+  #external-events .fc-event {
+    margin: 10px 0;
+    cursor: pointer;
+  }
+
+  #external-events p {
+    margin: 1.5em 0;
+    font-size: 11px;
+    color: #666;
+  }
+
+  #external-events p input {
+    margin: 0;
+    vertical-align: middle;
+  }
+  #calendar {
+    float: right;
+    width: 90em;
+  }
+  
+  #affiche-events {
+    float:left;
+    width: 300px;
+  }
+
+</style>
+</head>
+<body>
+  <div id='wrap'>
+
+    <div id='external-events'>
+      <h4>Draggable Events</h4>
+      <p>
+        <input type='checkbox' id='drop-remove' />
+        <label for='drop-remove'>remove after drop</label>
+      </p>
+    </div>
+
+    <div id='calendar'></div>
+  </div>
+
+  <div id='affiche-events'>
+    <h4>Afficher Mission</h4>
+    <form id='ask-event'>
+    </form>
+  </div>
+  
+  <div style='clear:both'></div>
+  <div id="dialog-form" title="Create new user" style="display:none;">
+    <form>
+      <fieldset>
+        <label for="bene">Benevole</label>
+        <select name="bene" id="bene">
+          <option disabled>/** pas travail **/</option>
+          <div id="zero"></div>
+          <option disabled>/** moins de 3h **/</option>
+          <div id="trois"></div>
+          <option disabled>/** moins de 6h **/</option>
+          <div id="six"></div>
+          <option disabled>/** moins de 12h **/</option>
+          <div id="douze"></div>
+        </select>
+      </fieldset>
+    </form>
+  </div>
+  <div id="date">
+    <h1>Date</h1>
+  </div>
+</body>
+</html>

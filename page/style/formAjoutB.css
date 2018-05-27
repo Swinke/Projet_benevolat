@@ -1,0 +1,25 @@
+body {
+    margin: 0 auto;
+}
+
+.container-fuild {
+    margin:10px;
+}
+
+fieldset {
+    margin-bottom:10px;
+}
+
+label {
+    margin-right:20px;
+}
+
+h3 {
+    margin-top:15px;
+    margin-bottom:20px;
+}
+
+h4 {
+    margin-top:15px;
+    margin-bottom:20px;
+}

@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8' />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- CSS -->
+<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="./style/formAjoutB.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script src="../bootstrap/js/bootstrap.min.js"></script>
+
+<script src="./script/script_ajoutB.js"></script>
+</head>
+<body>
+    <form class ='container-fuild'>
+        <div class='form-group' id="benevole">
+            <div id='erreur'></div>
+            <button type="button" id="submit" class="btn btn-default">Envoyer</button>
+            
+            <div class="row">
+                <div class='col-md-2'>
+                    <label for='date_ins'>date inscription</label>
+                    <input class="form-control" name="date_ins" id="date_ins" value="année/mois/jour"/>
+                </div>
+                <div class='radio-inline'>
+                    <input type='radio' id='membre' name = 'type_contrat' value='membre'/>
+                    <label for='membre'>membre</label>
+                    <input type='radio' id='membre_eng' name = 'type_contrat' value='membre engage'/>
+                    <label for='membre_eng'>membre engagé</label>
+                    <input type='radio' id='type_benevole' name = 'type_contrat' value='benevole'/>
+                    <label for='type_benevole'>benevole</label>
+                    <input type='radio' id='type_autre' name = 'type_contrat' value='autre'/>
+                    <label for='type_autre'>autre</label>
+                </div>
+            </div>
+                       
+            <h3>Section 1: Information personnel </h3>
+
+            <label class='radio-inline'>
+                <input type='radio' id='madame' name = 'sexe' value='mme'>Mme
+                <input type='radio' id='monsieur' name = 'sexe' value='m'/>M
+            </label>
+
+            <div class="row">
+                <div class='col-md-1'>
+                    <label for='idB'>N° benevole</label>
+                    <input class="form-control" name='idB' id='idB'/>
+                </div>
+                <div class='col-md-2'>
+                    <label for='nom'>Nom</label>
+                    <input class="form-control" name='nom' id='nom'/>
+                </div>
+                <div class='col-md-2'>
+                        <label for='prenom'>Prenom</label>
+                        <input class="form-control" name='prenom' id='prenom'/>
+                </div>
+                <div class='col-lg-2'>
+                    <label for='date'>date de naissance</label>
+                    <input class='form-control' name='date' id='date' value='année/mois/jour'/>
+                </div>
+            </div>
+
+            <div class="row">
+                    <div class='col-lg-1'>
+                            <label for='civique'>N° Civique</label>
+                            <input class="form-control" name='civique' id='civique'/>
+                    </div>
+                    <div class='col-lg-1'>
+                        <label for='app'>app</label>
+                        <input class="form-control" name='app' id='app'/>
+                    </div>
+                    <div class='col-lg-1'>
+                            <label for='cp'>code postal</label>
+                            <input class='form-control' name='cp' id='cp'/>
+                    </div>
+                    <div class='col-lg-2'>
+                            <label for='rue'>rue</label>
+                            <input class="form-control" name='rue' id='rue'/>
+                    </div>
+                    <div class='col-lg-2'>
+                        <label for='ville'>ville</label>
+                        <input class="form-control" name='ville' id='ville'/>
+                    </div>
+            </div>
+            <div class="row">
+                <div class='col-lg-2'>
+                    <label for='tel'>telephone</label>
+                    <input class='form-control' name='tel' id='tel'/>
+                </div>
+                <div class='col-lg-2'>
+                        <label for='courriel'>courriel</label>
+                        <input class='form-control' name='courriel' id='courriel'/>
+                </div>
+                <div class='col-lg-1'>
+                    <label for='revenu'>revenu</label>
+                    <input class='form-control' name='revenu'/>
+                </div>
+            </div>
+
+            <fieldset id="dossier_revenu">
+                <h4>Preuve revenu</h4>
+                <div class = "radio-inline">
+                    <input type='checkbox' id='preuve_revenu' name = 'preuve_revenu' value ='true'/>
+                    <label for='preuve_revenu'>preuve de revenu</label>
+                    <input type='checkbox' id='preuve_adresse' name = 'preuve_adresse' value ='true'/>
+                    <label for='preuve_adresse'>preuve d'adresse</label>
+                    <input type='checkbox' id='carte_id' name = 'carte_id' value ='true'/>
+                    <label for='carte_id'>carte identité</label>
+                </div>
+                <div class = "radio-inline">
+                    <input type='checkbox' id='cotisation' name = 'cotisation' value ='true'/>
+                    <label for='cotisation'>cotisation payé</label>
+                    <label for='montant'>montant :</label>
+                    <input name = "montant" id ="montant"/>
+                </div>
+            </fieldset>
+
+            <fieldset id='contact_urg'>
+                <h4>Contact en cas d'urgence</h4>
+                <div class="row">
+                    <div class='col-md-2'>
+                        <label for='nom_urg'>Nom</label>
+                        <input class="form-control" name='nom_urg' id='nom_urg'/>
+                    </div>
+                    <div class='col-md-2'>
+                            <label for='prenom_urg'>Prenom</label>
+                            <input class="form-control" name='prenom_urg' id='prenom_urg'/>
+                    </div>
+                    <div class='col-md-2'>
+                        <label for='tel_urg'>telephone</label>
+                        <input class='form-control' name='tel_urg' id='tel_urg'/>
+                    </div>
+    
+                </div>
+            </fieldset>
+
+            <fieldset id='premier_rdv'>
+                <h4>Premier rendez vous</h4>
+                <div class="row">
+                    <div class='col-md-2'>
+                        <label for='date_rdv'>date</label>
+                        <input class="form-control" name='date_rdv' id='date_rdv'/>
+                    </div>
+                    <div class='col-md-2'>
+                        <label for='poste'>poste</label>
+                        <input class="form-control" name='poste' id='poste'/>
+                    </div>
+    
+                </div>
+            </fieldset>
+
+        </div>
+
+        <fieldset id='socio'>
+            <h3>Section 2: Informations socio démographiques</h3>
+            <h4>Statut</h4>
+            <div id="statut"></div>
+            <div class='radio-inline'>
+                <input type='radio' id='citoyen' name = 'statut' value='citoyen'/>
+                <label for='citoyen'>citoyen-ne</label>
+                <input type='radio' id='resident' name = 'statut' value = 'resident'/>
+                <label for='resident'>resident-e permanent-e</label>
+                <input type='radio' id='refugie' name = 'statut' value = 'refugie'/>
+                <label for='refugie'>refugié-e</label>
+                <input type='radio' id='attente' name = 'statut' value = 'attente'/>
+                <label for='attente'>en attente de statut</label>
+                <input type='radio' id='sautre' name = 'statut'/>
+                <label for='sautre'>autre</label>
+                <input type='text' name = 'statut' disabled/> 
+            </div>
+            <div>
+                <input type='radio' id='moinsdeux' name = 'moinsdeux' value = 'true'/>
+                <label for='moinsdeux'>Cochez si vous habitez depuis moins de 2 ans au Québec</label>
+            </div>
+            
+            <h4>Langue de communication</h4>
+            <div id='langue'></div>
+            <div class='radio-inline'>
+                <input type='radio' id='francais' name = 'langue' value='francais'/>
+                <label for='francais'>français</label>
+                <input type='radio' id='anglais' name = 'langue' value='anglais'/>
+                <label for='anglais'>anglais</label>
+                <input type='radio' id='lautre' name ='langue'/>
+                <label for='lautre'>autre</label>
+                <input type='text' name = 'langue' disabled/>
+                
+            </div>
+
+            <h4>Type de logement</h4>
+            <div id='logement'></div>
+            <div class='form-group radio'>
+                <input type='radio' id='hlm' name = 'logement' value='hlm'/>
+                <label for='hlm'>hlm</label>
+                <input type='radio' id='coop' name = 'logement' value='coop'/>
+                <label for='coop'>cooperative</label>
+                <input type='radio' id='supervise' name = 'logement' value='supervise'/>
+                <label for='supervise'>supervisé</label>
+                <input type='radio' id='chambre' name = 'logement' value='chambre'/>
+                <label for='chambre'>chambre</label>
+                <input type='radio' id='sansdomicile' name = 'logement' value='sansdomicile'/>
+                <label for='sansdomicile'>sans domicile</label>
+                <input type='radio' id='apprive' name = 'logement' value='apprive'/>
+                <label for='apprive'>appartement privé</label>
+                <input type='radio' id='logautre' name = 'logement'/>
+                <label for='logautre'>autre</label>
+                <input type='text' name = 'logement' disabled/>
+            </div>
+
+            <h4>Type de ménage</h4>
+            <div id='menage'></div>
+            <div class='form-group radio'>
+                <input type='radio' id='seul' name = 'menage' value='seul'/>
+                <label for='seul'>personne</label>
+                <input type='radio' id='couplesans' name = 'menage' value='couplesans'/>
+                <label for='couplesans'>couple sans enfant</label>
+                <input type='radio' id='couple' name = 'menage' value='couple'/>
+                <label for='couple'>couple</label>
+                <input type='radio' id='coloc' name = 'menage' value='coloc'/>
+                <label for='coloc'>colocataire</label>
+                <input type='radio' id='mono' name = 'menage' value='mono'/>
+                <label for='mono'>monoparentale</label>
+                <input type='radio' id='menautre' name = 'menage'/>
+                <label for='menautre'>autre</label>
+                <input type='text' name = 'menage' disabled/>
+            </div>
+
+            <h4>Occupation</h4>
+            <div id='occupation'></div>
+            <div class='form-group radio'>
+                <input type='radio' id='emploi' name = 'occupation' value='emploi'/>
+                <label for='emploi'>emploi</label>
+                <input type='radio' id='etudiant' name = 'occupation' value='etudiant'/>
+                <label for='etudiant'>etudiant</label>
+                <input type='radio' id='recherche' name = 'occupation' value='recherche'/>
+                <label for='recherche'>en recherche d'emploi</label>
+                <input type='radio' id='hors' name = 'occupation' value='hors'/>
+                <label for='hors'>hors du marché du travail</label>
+                <input type='radio' id='occupautre' name = 'occupation'/>
+                <label for='occupautre'>autre</label>
+                <input type='text' name = 'occupation' disabled/>
+            </div>
+            <h4>Source principale de revenu</h4>
+            <div id='source_revenu'></div>
+            <div class='form-group radio'>
+                <input type='radio' id='salaire' name = 'source_revenu' value='salaire'/>
+                <label for='salaire'>salaire</label>
+                <input type='radio' id='revenu' name = 'source_revenu' value='revenu'/>
+                <label for='revenu'>revenu</label>
+                <input type='radio' id='viellesse' name = 'source_revenu' value='viellesse'/>
+                <label for='viellesse'>sécurité de la viellesse</label>
+                <input type='radio' id='bourse' name = 'source_revenu' value='bourse'/>
+                <label for='bourse'>bourse</label>
+                <input type='radio' id='srevenu' name = 'source_revenu' value='srevenu'/>
+                <label for='srevenu'>sans revenu</label>
+                <input type='radio' id='autonome' name = 'source_revenu' value='autonome'/>
+                <label for='autonome'>autonome</label>
+                <input type='radio' id='revautre' name = 'source_revenu'/>
+                <label for='revautre'>autre</label>
+                <input type='text' name = 'source_revenu' disabled/>
+            </div>
+
+            <h4>Permis et voiture</h4>
+            <input type='checkbox' id='permis' name = 'permis' value='true'/>
+            <label for='permis'>Possesion permis de conduire</label>
+            <input type='checkbox' id='vehicule' name = 'vehicule' value='true'/>
+            <label for='vehicule'>Possession vehicule</label>
+        </div>
+
+        <fieldset id='implication'>
+            <h3>Section 3: implication</h3>
+
+            <h4>Compétence</h4>
+            <div id='competence'></div>
+            <div id='comp'>
+                <div id='comp_err'></div>
+                <input type='checkbox' id='administration' name = 'administration' value = 'administration'/>
+                <label for='administration'>administration</label>
+                <input type='checkbox' id='serviceclientele' name = 'serviceclientele' value = 'serviceclientele'/>
+                <label for='service clientele'>service à la clientele</label>
+                <input type='checkbox' id='alimentation' name = 'alimentation' value = 'alimentation'/>
+                <label for='alimentation'>alimentation</label>
+                <input type='checkbox' id='manutention' name = 'manutention' value = 'manutention'/>
+                <label for='manutention'>manutention</label>
+            </div>
+
+            <div class="form-group" id="obervation">
+                <label for="comment">Observation : <small>255</small></label>
+                <textarea class="form-control" rows="5" id="ob_comp" name="ob_comp"></textarea>
+            </div> 
+
+            <h4>Condition physique</h4>
+            <p>Charge :</p>
+            <div id='charge'>
+                <div id='charge_err'></div>
+                <input type='checkbox' id='aucun' name = 'aucun' value ='aucun'/>
+                <label for='aucun'>Aucune charge</label>
+                <input type='checkbox' id='leger' name = 'leger' value ='leger'/>
+                <label for='leger'>Legère (moins 22lb)</label>
+                <input type='checkbox' id='moyen' name = 'moyen' value ='moyen'/>
+                <label for='moyen'>Moyennes</label>
+                <input type='checkbox' id='lourd' name = 'lourd' value='lourd'/>
+                <label for='lourd'>Lourdes (sup 50 lb)</label>
+            </div>
+            <div>
+                <input type='checkbox' id='debout' name = '3h' value='true'/>
+                <label for='debout'>Peux rester debout plus de trois heure</label>
+            </div>
+
+            <div class="form-group" id="observation">
+                <label for="comment">Observation : <small>255</small> </label>
+                <textarea class="form-control" rows="5" id="ob_charge" name="ob_charge"></textarea>
+            </div>
+        </fieldset>
+
+        <fieldset id='form_eng'>
+            <div id='eng_err'></div>
+            <h4>Nature de l'engagement</h4>
+            <div class='form-group radio'>
+                <input type='radio' id='regulier' name = 'engagement' value='regulier'/>
+                <label for='regulier'>régulier</label>
+                <input type='radio' id='attente' name = 'engagement' value='attente'/>
+                <label for='attente'>en attente/incertain</label>
+                <input type='radio' id='occasionnel' name = 'engagement' value='occasionnel'/>
+                <label for='occasionnel'>occasionnel</label>
+                <input type='radio' id='fin' name = 'engagement' value='fin'/>
+                <label for='fin'>fin d'implication / non retenue</label>
+            </div>
+            <div class='form-group radio'>
+                <input type='radio' id='integrer' name = 'integration' value='true'/>
+                <label for='integrer'>integrer</label>
+                <input type='radio' id='pas_integrer' name = 'integration' value='false'/>
+                <label for='pas_integrer'>pas integrer</label>
+            </div>
+        </fieldset>
+
+        <fieldset id='dispo'>
+            <h4>Vos disponibilité</h4>
+            <table class ="table">
+                <tr>
+                    <th></th>
+                    <th>Lundi</th>
+                    <th>Mardi</th>
+                    <th>Mercedi</th>
+                    <th>Jeudi</th>
+                    <th>Vendredi</th>
+                </tr>
+                <tr id='am'>
+                    <td>AM</td>
+                    <td>
+                        <input type='checkbox' id='mon_am' name = 'mon' value = 'mon'/>   
+                    </td>
+                    <td>
+                        <input type='checkbox' id='tue_am' name = 'tue' value = 'tue'/>   
+                    </td>
+                    <td>
+                        <input type='checkbox' id='wed_am' name = 'wed' value = 'wed'/>   
+                    </td>
+                    <td>
+                        <input type='checkbox' id='thu_am' name = 'thu' value = 'thu'/>   
+                    </td>
+                    <td>
+                        <input type='checkbox' id='fri_am' name = 'fri' value = 'fri'/>   
+                    </td>
+                </tr>
+                <tr id='pm'>
+                    <td>PM</td>
+                    <td>
+                        <input type='checkbox' id='mon_pm' name = 'mon' value = 'mon'/>   
+                    </td>
+                    <td>
+                        <input type='checkbox' id='tue_pm' name = 'tue' value = 'tue'/>   
+                    </td>
+                    <td>
+                        <input type='checkbox' id='wed_pm' name = 'wed' value = 'wed'/>   
+                    </td>
+                    <td>
+                        <input type='checkbox' id='thu_pm' name = 'thu' value = 'thu'/>   
+                    </td>
+                    <td>
+                        <input type='checkbox' id='fri_pm' name = 'fri' value = 'fri'/>   
+                    </td>
+                </tr>
+            </table>
+            <div class="form-group" id="observation">
+                <label for="ob_dispo">Observation : <small>255</small></label>
+                <textarea class="form-control" rows="5" id="ob_dispo" name="ob_dispo"></textarea>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <h4>Informations complémentaires</h4>
+            <p>Rentrez toute informations que vous souhaitez nous signaler</p>
+            <div class="form-group has-error" id="observation">
+                <label for="ob">Observation : <small>255</small></label>
+                <textarea class="form-control" rows="5" id="ob" name="ob"></textarea>
+            </div>                      
+        </fieldset>
+        
+    </form>
+
+</body>
