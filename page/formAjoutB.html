@@ -97,7 +97,7 @@
                 </div>
                 <div class='col-lg-1'>
                     <label for='revenu'>revenu</label>
-                    <input class='form-control' name='revenu'/>
+                    <input class='form-control' name='revenu' id='revenu'/>
                 </div>
             </div>
         </div>
@@ -154,10 +154,54 @@
             </div>
         </fieldset>
 
-        
+        <fieldset id='langue_c'>
+            <h4>Langue de communication</h4>
+            <div id='langue'></div>
+            <div class='radio-inline'>
+                <input type='radio' id='francais' name = 'langue' value='francais'/>
+                <label for='francais'>français</label>
+                <input type='radio' id='anglais' name = 'langue' value='anglais'/>
+                <label for='anglais'>anglais</label>
+                <input type='radio' id='lautre' name ='langue'/>
+                <label for='lautre'>autre</label>
+                <input type='text' name = 'langue' disabled/>  
+            </div>
+        </fieldset>
 
         <fieldset id='socio'>
             <h3>Section 2: Informations socio démographiques</h3>
+
+            <h4>Nationalité</h4>
+            <div id='natio_err'></div>
+            <div class='radio-inline'>
+                <input type='radio' id='canada' name = 'nationalite' value='canada'/>
+                <label for='canada'>Canada hors québec</label>
+                <input type='radio' id='quebec' name = 'nationalite' value = 'quebec'/>
+                <label for='quebec'>Québec</label>
+                <input type='radio' id='moyen-orient' name = 'nationalite' value = 'moyen-orient'/>
+                <label for='moyen-orient'>moyen orient</label>
+                <input type='radio' id='afrique' name = 'nationalite' value = 'afrique'/>
+                <label for='afrique'>afrique sauf moyen-orient</label>
+                <input type='radio' id='asie' name = 'nationalite' value='asie'/>
+                <label for='asie'>asie</label>
+                <input type='radio' id='océanie' name = 'nationalite' value='océanie'/>
+                <label for='océanie'>océanie</label>
+                <input type='radio' id='europe' name = 'nationalite' value='europe'/>
+                <label for='europe'>europe</label>
+                <input type='radio' id='mexique' name = 'nationalite' value='mexique'/>
+                <label for='mexique'>Mexique</label>
+                <input type='radio' id='etats-unis' name = 'nationalite' value='etats-unis'/>
+                <label for='etats-unis'>États-Unis</label>
+                <input type='radio' id='amerique du sud' name = 'nationalite' value='amerique du sud'/>
+                <label for='amerique du sud'>Amérique du Sud</label>
+            </div>
+
+            <div>
+                <input type='radio' id='moinsdeux' name = 'moinsdeux' value = 'true'/>
+                <label for='moinsdeux'>Cochez si vous habitez depuis moins de 2 ans au Québec</label>
+            </div>
+
+
             <h4>Statut</h4>
             <div id="statut"></div>
             <div class='radio-inline'>
@@ -176,19 +220,6 @@
             <div>
                 <input type='radio' id='moinsdeux' name = 'moinsdeux' value = 'true'/>
                 <label for='moinsdeux'>Cochez si vous habitez depuis moins de 2 ans au Québec</label>
-            </div>
-            
-            <h4>Langue de communication</h4>
-            <div id='langue'></div>
-            <div class='radio-inline'>
-                <input type='radio' id='francais' name = 'langue' value='francais'/>
-                <label for='francais'>français</label>
-                <input type='radio' id='anglais' name = 'langue' value='anglais'/>
-                <label for='anglais'>anglais</label>
-                <input type='radio' id='lautre' name ='langue'/>
-                <label for='lautre'>autre</label>
-                <input type='text' name = 'langue' disabled/>
-                
             </div>
 
             <h4>Type de logement</h4>
@@ -269,7 +300,34 @@
             <label for='permis'>Possesion permis de conduire</label>
             <input type='checkbox' id='vehicule' name = 'vehicule' value='true'/>
             <label for='vehicule'>Possession vehicule</label>
-        </div>
+
+            <h4>Niveau de scolarité</h4>
+            <div id='sco_err'></div>
+            <div class='radio-inline'>
+                <input type='radio' id='primaire' name = 'niveau_sco' value='primaire'/>
+                <label for='primaire'>primaire</label>
+                <input type='radio' id='quebec' name = 'niveau_sco' value = 'secondaire'/>
+                <label for='secondaire'>secondaire</label>
+                <input type='radio' id='collegiale' name = 'niveau_sco' value = 'collegiale'/>
+                <label for='collegiale'>collegiale</label>
+                <input type='radio' id='universitaire' name = 'niveau_sco' value = 'universitaire'/>
+                <label for='universitaire'>universitaire</label>
+            </div>
+
+            <h4>Référé par</h4>
+            <div id='ref_err'></div>
+            <div class='radio-inline'>
+                <input type='radio' id='organisme' name = 'referer' value='organisme'/>
+                <label for='organisme'>organisme</label>
+                <input type='radio' id='clsc' name = 'referer' value = 'clsc'/>
+                <label for='clsc'>clsc</label>
+                <input type='radio' id='média sociaux' name = 'referer' value = 'média sociaux'/>
+                <label for=' média sociaux'>média sociaux</label>
+                <input type='radio' id='autres membres' name = 'referer' value = 'autres membres'/>
+                <label for='autres membres'>autres membres</label>
+            </div>
+
+        </fieldset>
 
         <fieldset id='implication'>
             <h3>Section 3: implication</h3>
@@ -318,8 +376,8 @@
         </fieldset>
 
         <fieldset id='form_eng'>
-            <div id='eng_err'></div>
             <h4>Nature de l'engagement</h4>
+            <div id='eng_err'></div>
             <div class='form-group radio'>
                 <input type='radio' id='regulier' name = 'engagement' value='regulier'/>
                 <label for='regulier'>régulier</label>
@@ -330,6 +388,7 @@
                 <input type='radio' id='fin' name = 'engagement' value='fin'/>
                 <label for='fin'>fin d'implication / non retenue</label>
             </div>
+            <div id='int_err'></div>
             <div class='form-group radio'>
                 <input type='radio' id='integrer' name = 'integration' value='true'/>
                 <label for='integrer'>integrer</label>
@@ -341,7 +400,7 @@
         <fieldset id='dispo'>
             <h4>Vos disponibilité</h4>
             <table class ="table">
-                <tr>
+                <tr name ='entete'>
                     <th></th>
                     <th>Lundi</th>
                     <th>Mardi</th>
@@ -349,8 +408,8 @@
                     <th>Jeudi</th>
                     <th>Vendredi</th>
                 </tr>
-                <tr id='am'>
-                    <td>AM</td>
+                <tr name='7h-14h'>
+                    <td>7h-14h</td>
                     <td>
                         <input type='checkbox' id='mon_am' name = 'mon' value = 'mon'/>   
                     </td>
@@ -367,8 +426,8 @@
                         <input type='checkbox' id='fri_am' name = 'fri' value = 'fri'/>   
                     </td>
                 </tr>
-                <tr id='pm'>
-                    <td>PM</td>
+                <tr name='9h-12h'>
+                    <td>9h-12h</td>
                     <td>
                         <input type='checkbox' id='mon_pm' name = 'mon' value = 'mon'/>   
                     </td>
@@ -383,6 +442,24 @@
                     </td>
                     <td>
                         <input type='checkbox' id='fri_pm' name = 'fri' value = 'fri'/>   
+                    </td>
+                </tr>
+                <tr name='14h-17h'>
+                    <td>14h-17h</td>
+                    <td>
+                        <input type='checkbox' name = 'mon' value = 'mon'/>   
+                    </td>
+                    <td>
+                        <input type='checkbox' name = 'tue' value = 'tue'/>   
+                    </td>
+                    <td>
+                        <input type='checkbox' name = 'wed' value = 'wed'/>   
+                    </td>
+                    <td>
+                        <input type='checkbox' name = 'thu' value = 'thu'/>   
+                    </td>
+                    <td>
+                        <input type='checkbox' name = 'fri' value = 'fri'/>   
                     </td>
                 </tr>
             </table>
@@ -400,6 +477,53 @@
                 <textarea class="form-control" rows="5" id="ob" name="ob"></textarea>
             </div>                      
         </fieldset>
+
+        <!--<fieldset id='stat'>
+            <h3>Nationalité</h3>
+            <div class='form-group radio'>
+                <input type='radio' id='canada' name = 'nationalite' value='canada'/>
+                <label for='canada'>Canada hors quebec</label>
+                <input type='radio' id='quebec' name = 'nationalite' value='quebec'/>
+                <label for='quebec'>Québec</label>
+                <input type='radio' id='moyen_orient' name = 'nationalite' value='moyen orient'/>
+                <label for='moyen_orient'>moyen orient</label>
+                <input type='radio' id='afrique' name = 'nationalite' value='afrique'/>
+                <label for='afrique'>Afrique</label>
+                <input type='radio' id='asie' name = 'nationalite' value='asie'/>
+                <label for='asie'>Asie</label>
+                <input type='radio' id='oceanie' name = 'nationalite' value='oceanie'/>
+                <label for='oceanie'>Océanie</label> 
+                <input type='radio' id='oceanie' name = 'nationalite' value='oceanie'/>
+                <label for='oceanie'>Océanie</label>
+                <input type='radio' id='europe' name = 'nationalite' value='europe'/>
+                <label for='europe'>Europe</label>
+                <input type='radio' id='mexique' name = 'nationalite' value='mexique'/>
+                <label for='mexique'>Mexique</label>
+                <input type='radio' id='etats-unis' name = 'nationalite' value='etats-unis'/>
+                <label for='etats-unis'>Etats-Unis</label>
+                <input type='radio' id='amerique_sud' name = 'nationalite' value='amerique sud'/>
+                <label for='mexique'>Amérique du Sud</label>       
+            </div>
+
+            <h3>Niveau scolaire</h3>
+            <input type='radio' id='primaire' name = 'scolaire' value='primaire'/>
+            <label for='primaire'>Primaire</label>
+            <input type='radio' id='secondaire' name = 'scolaire' value='secondaire'/>
+            <label for='secondaire'>Secondaire</label>
+            <input type='radio' id='collegiale' name = 'scolaire' value='collegiale'/>
+            <label for='collegiale'>Collegiale</label>
+
+            <h3>Référer par</h3>
+            <input type='radio' id='organisme' name = 'reference' value='organisme'/>
+            <label for='organisme'>organisme</label>
+            <input type='radio' id='clsc' name = 'reference' value='clsc'/>
+            <label for='clsc'>clsc</label>
+            <input type='radio' id='media_sociaux' name = 'reference' value='media sociaux'/>
+            <label for='media_sociaux'>media sociaux</label>
+            <input type='radio' id='autres_membres' name = 'reference' value=' autres_membres'/>
+            <label for='autres_membres'>autres membres</label>
+
+        </fieldset> !-->
         
     </form>
 

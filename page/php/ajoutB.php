@@ -23,7 +23,7 @@
 
             $mysqli = new mysqli("localhost","root","","testbenevolat");
 
-            $sql = "SELECT nom, prenom FROM benevole WHERE nom='".$_POST['nom']."' AND prenom= '".$_POST['prenom']."'";
+            $sql = "SELECT nom, prenom FROM benevole WHERE nom='".$_POST['nom']."' AND prenom= '".$_POST['prenom']."' OR idBenevole = ".$_POST['idB'];
             $res = $mysqli->query($sql)->fetch_assoc();
             if($res) {
                 $erreur['exist'] = 'true';
@@ -34,30 +34,45 @@
                             ." VALUES ('".$_POST['idB']."', '".$_POST['nom']."', '".$_POST['prenom']."', '".$_POST['sexe']."',"
                             ."'".$_POST['tel']."', '".$_POST['date']."', '".$_POST['courriel']."', '".$_POST['revenu']."',"
                             ."'','','".$_POST['type_contrat']."')";
-                } else {
+                } else if($_POST['type_contrat'] == "benevole" || $_POST['type_contrat'] == "membre engage") { 
                     $sql = "INSERT INTO benevole (idBenevole, nom, prenom, sexe, tel, date, courriel, revenu, engagement, integration,type_benevole)"
                             ." VALUES ('".$_POST['idB']."', '".$_POST['nom']."', '".$_POST['prenom']."', '".$_POST['sexe']."',"
                             ."'".$_POST['tel']."', '".$_POST['date']."', '".$_POST['courriel']."', '".$_POST['revenu']."',"
                             ."'".$_POST['engagement']."','".$_POST['integration']."','".$_POST['type_contrat']."')";
+                }
+                else {
+                    $sql = "INSERT INTO benevole (idBenevole, nom, prenom, sexe, tel, date, courriel, revenu, engagement, integration,type_benevole)"
+                            ." VALUES ('".$_POST['idB']."', '".$_POST['nom']."', '".$_POST['prenom']."', '".$_POST['sexe']."',"
+                            ."'".$_POST['tel']."', '".$_POST['date']."', '".$_POST['courriel']."', '".$_POST['revenu']."',"
+                            ."'','','".$_POST['type_contrat']."')";
                 }
 
                 $res = $mysqli->query($sql);
                 $erreur['correct'] = $res;
                 if($res) {
                     if($_POST['type_contrat'] == "autre") {
-                        $sql = "INSERT INTO dossier_benevole (idB, date_ins, app, rue, ville, cp, civique, langue, logement, menage, source_revenu, occupation, statut, permis, vehicule,deuxans,troisheure)"
-                            ." VALUES (".$_POST['idB'].",'".$_POST['date_ins']."','".$_POST['app']."', '".$_POST['rue']."','".$_POST['ville']."','".$_POST['cp']."', ".$_POST['civique'].", "
-                            ."'','','','','','','','','','')";
-                    }else {
-                        $sql = "INSERT INTO dossier_benevole (idB, date_ins, app, rue, ville, cp, civique, langue, logement, menage, source_revenu, occupation, statut, permis, vehicule,deuxans,troisheure)"
-                            ." VALUES (".$_POST['idB'].",'".$_POST['date_ins']."','".$_POST['app']."', '".$_POST['rue']."','".$_POST['ville']."','".$_POST['cp']."', ".$_POST['civique'].", "
+                        $sql = "INSERT INTO dossier_benevole (idB, date_ins, app, rue, ville, cp, civique, nationalite, langue, logement, menage, source_revenu, occupation, statut, permis, vehicule,deuxans,troisheure,scolaire,reference)"
+                            ." VALUES (".$_POST['idB'].",'".$_POST['date_ins']."','".$_POST['app']."', '".$_POST['rue']."','".$_POST['ville']."','".$_POST['cp']."', ".$_POST['civique'].", '',"
+                            ."'','','','','','','','','','','','')";
+                    } else if($_POST['type_contrat'] == "benevole") {
+                        $sql = "INSERT INTO dossier_benevole (idB, date_ins, app, rue, ville, cp, civique, nationalite, langue, logement, menage, source_revenu, occupation, statut, permis, vehicule,deuxans,troisheure,scolaire,reference)"
+                            ." VALUES (".$_POST['idB'].",'".$_POST['date_ins']."','".$_POST['app']."', '".$_POST['rue']."','".$_POST['ville']."','".$_POST['cp']."', ".$_POST['civique'].", '',"
+                            ."'".$_POST['langue']."', '', '',"
+                            ."'', '','', '', '',"
+                            ."'".$_POST['moinsdeux']."','".$_POST['3h']."','','')";
+                    
+                    } else {
+                        $sql = "INSERT INTO dossier_benevole (idB, date_ins, app, rue, ville, cp, civique, nationalite, langue, logement, menage, source_revenu, occupation, statut, permis, vehicule,deuxans,troisheure,scolaire,reference)"
+                            ." VALUES (".$_POST['idB'].",'".$_POST['date_ins']."','".$_POST['app']."', '".$_POST['rue']."','".$_POST['ville']."','".$_POST['cp']."', ".$_POST['civique'].", '".$_POST['nationalite']."',"
                             ."'".$_POST['langue']."', '".$_POST['logement']."', '".$_POST['menage']."',"
                             ."'".$_POST['source_revenu']."', '".$_POST['occupation']."','".$_POST['statut']."', '".$_POST['permis']."', '".$_POST['vehicule']."',"
-                            ."'".$_POST['moinsdeux']."','".$_POST['3h']."')";
+                            ."'".$_POST['moinsdeux']."','".$_POST['3h']."','".$_POST['niveau_sco']."','".$_POST['referer']."')";
                     }
+                    $erreur[] = $sql;
                     $res = $mysqli->query($sql);
                     $erreur['correct_d'] = $res;
-                    if(!$_POST['type_contrat'] == "autre") {
+
+                    if(!($_POST['type_contrat'] == "autre")) {
                         $sql = "INSERT INTO benevole_persurg (idB, nom, prenom, numero)"
                                 ."VALUES (".$_POST['idB'].",'".$_POST['nom_urg']."','".$_POST['prenom_urg']."','".$_POST['tel_urg']."')";
 
@@ -74,6 +89,6 @@
             }
         }
     }
-    $erreur[] = $sql;
+    
     echo json_encode($erreur);
 ?>

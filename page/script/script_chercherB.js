@@ -3,7 +3,7 @@ $(document).ready(function() {
     $.getJSON("./php/chercherBenevole.php", function(data) {
         $.each(data, function (i,benevole) {
             $('table').append("<tr id='"+benevole.idBenevole+"'><td>"+benevole.idBenevole+"</td><td>"+benevole.nom+"</td><td>"+benevole.prenom+"</td><td>"+benevole.integration+"</td></tr>");
-            if(benevole.integration == "false") {
+            if(benevole.integration == "false" || !benevole.integration) {
                 $("#"+benevole.idBenevole).css("background-color","yellow");
             }
         });
